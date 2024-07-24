@@ -27,7 +27,7 @@ To use this action in your project, add the following to your GitHub Actions wor
     command: code test --all-projects --json-file-output=snyk_code.json
 
 - name: Add Job Summary from Snyk reports
-  uses: medly/snyk-job-summary-action@v1
+  uses: OMGhozlan/snyk-job-summary-action@v1
   with:
       dependencies-report-path: snyk_dependencies.json # The file name of json file which is generated on snyk test
       code-report-path: snyk_code.json # The file name of json file which is generated on snyk code test
