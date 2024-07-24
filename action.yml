@@ -15,26 +15,26 @@ runs:
   using: composite
 
   steps:
-    - uses: actions/setup-node@v4
+    - uses: actions/setup-node@v3
 
-      shell: bash
     - run: npm install snyk-to-html --location=global
+      shell: bash
 
     - name: convert Snyk Dependencies json to html format
-      shell: bash
       run: snyk-to-html -i ${{inputs.DependenciesReportPath}} -o snyk_dependencies.html
+      shell: bash
 
     - name: convert Snyk Code json to html format
-      shell: bash
       run: snyk-to-html -i ${{inputs.CodeReportPath}} -o snyk_code.html
+      shell: bash
 
     - run: pip install mdutils
-      shell: bash
       name: install mdutils
+      shell: bash
 
     - name: Run script
-      shell: bash
       run: python ${{ github.action_path }}/job_summary.py ${{inputs.DependenciesReportPath}} ${{inputs.CodeReportPath}} 
+      shell: bash
 
     - name: Add output to Job Summary
       run: cat vulnerabilities.md >> $GITHUB_STEP_SUMMARY
