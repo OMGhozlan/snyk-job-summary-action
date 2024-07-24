@@ -15,36 +15,26 @@ runs:
   using: composite
 
   steps:
-    - uses: actions/setup-node@v3
+    - uses: actions/setup-node@v4
 
-    - run: npm install snyk-to-html --location=global
       shell: bash
+    - run: npm install snyk-to-html --location=global
 
     - name: convert Snyk Dependencies json to html format
-      run: snyk-to-html -i ${{inputs.DependenciesReportPath}} -o snyk_dependencies.html
       shell: bash
+      run: snyk-to-html -i ${{inputs.DependenciesReportPath}} -o snyk_dependencies.html
 
     - name: convert Snyk Code json to html format
-      run: snyk-to-html -i ${{inputs.CodeReportPath}} -o snyk_code.html
       shell: bash
-
-    - name: 'Upload Artifact'
-      uses: actions/upload-artifact@v3
-      with:
-        name: snyk-details
-        path: |
-          snyk_dependencies.html
-          snyk_code.html
-        retention-days: 60
-        if-no-files-found: ignore
+      run: snyk-to-html -i ${{inputs.CodeReportPath}} -o snyk_code.html
 
     - run: pip install mdutils
-      name: install mdutils
       shell: bash
+      name: install mdutils
 
     - name: Run script
-      run: python ${{ github.action_path }}/job_summary.py ${{inputs.DependenciesReportPath}} ${{inputs.CodeReportPath}} 
       shell: bash
+      run: python ${{ github.action_path }}/job_summary.py ${{inputs.DependenciesReportPath}} ${{inputs.CodeReportPath}} 
 
     - name: Add output to Job Summary
       run: cat vulnerabilities.md >> $GITHUB_STEP_SUMMARY
